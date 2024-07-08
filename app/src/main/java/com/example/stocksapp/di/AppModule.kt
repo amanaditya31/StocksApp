@@ -21,7 +21,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent ::class)
 object AppModule {
 
-
     private val moshi= Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
@@ -29,15 +28,15 @@ object AppModule {
     val logging= HttpLoggingInterceptor()
 
     val httpClient= OkHttpClient.Builder().apply {
-        addInterceptor(
-            Interceptor{
-                    chain ->
-                val builder=chain.request()
-                    .newBuilder()
-                builder.header("X-Api-Key", API_KEY)
-                return@Interceptor chain.proceed(builder.build())
-            }
-        )
+//        addInterceptor(
+//            Interceptor{
+//                    chain ->
+//                val builder=chain.request()
+//                    .newBuilder()
+//                builder.header("apikey", API_KEY)
+//                return@Interceptor chain.proceed(builder.build())
+//            }
+//        )
         logging.level= HttpLoggingInterceptor.Level.BODY
         addNetworkInterceptor(logging)
     }.build()
@@ -48,10 +47,20 @@ object AppModule {
         .client(httpClient)
         .build()
 
-    val retrofitService: StocksApi by lazy{
-        retrofit.create(StocksApi:: class.java)
+//    val retrofitService: StocksApi by lazy{
+//        retrofit.create(StocksApi:: class.java)
+//    }
+    @Singleton
+    @Provides
+    fun providesStocksApi(): StocksApi {
+        return retrofit.create(StocksApi::class.java)
     }
-
-    @
+//    @Singleton
+//    @Provides
+//    fun providesStocksApi(): Lazy<StocksApi> {
+//        return lazy {
+//            retrofit.create(StocksApi::class.java)
+//        }
+//    }
 
 }

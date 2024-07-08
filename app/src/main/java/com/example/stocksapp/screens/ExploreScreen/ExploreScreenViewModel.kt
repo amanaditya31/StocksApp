@@ -46,7 +46,7 @@ class ExploreScreenViewModel @Inject constructor(private val repository: StocksR
                         if(list1.isNotEmpty()) isloading1=false
                     }
                     is Resource.Error->{
-                        Log.e("Network", "searxhBooks: Failed getting gainer stocks")
+                        Log.e("Network", "Failed getting gainer stocks : {${response.message}}")
                     }else->{isloading1=false}
                 }
             }catch (exception: Exception){
@@ -68,7 +68,7 @@ class ExploreScreenViewModel @Inject constructor(private val repository: StocksR
                         if(list2.isNotEmpty()) isloading2=false
                     }
                     is Resource.Error->{
-                        Log.e("Network", "searchBooks: Failed getting loser stocks")
+                        Log.e("Network", "Failed getting loser stocks : {${response.message}}")
                     }else->{isloading2=false}
                 }
             }catch (exception: Exception){

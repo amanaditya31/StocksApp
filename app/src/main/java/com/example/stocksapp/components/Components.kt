@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -23,19 +24,24 @@ fun BottomMenu(navController: NavController) {
     )
     BottomNavigation() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+        val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { screen->
             BottomNavigationItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
                 label = { Text(text=screen.title) },
-                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                selectedContentColor= Color.Black,
+                unselectedContentColor= Color.Gray,
+                selected = currentRoute==screen.route,
                 onClick = {
                     navController.navigate(screen.route) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
                         // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                        navController.graph.startDestinationRoute?.let{
+                                route->
+                            popUpTo(route){
+                                saveState=true
+                            }
                         }
                         // Avoid multiple copies of the same destination when
                         // reselecting the same item

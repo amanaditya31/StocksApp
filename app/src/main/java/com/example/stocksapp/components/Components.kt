@@ -1,5 +1,6 @@
 package com.example.stocksapp.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -8,8 +9,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,16 +23,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.stocksapp.navigation.BottomMenu
 
 @Composable
-fun BottomMenu(navController: NavController) {
+fun BottomMenu(navController: NavController, counter: Int) {
     val items = listOf(
         BottomMenu.Gainers,
         BottomMenu.Losers
     )
+
     BottomNavigation() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { screen->
             BottomNavigationItem(
+                modifier = Modifier.padding(bottom = 20.dp),
                 icon = { Icon(screen.icon, contentDescription = null) },
                 label = { Text(text=screen.title) },
                 selectedContentColor= Color.Black,
@@ -49,6 +57,7 @@ fun BottomMenu(navController: NavController) {
                         // Restore state when reselecting a previously selected item
                         restoreState = true
                     }
+
                 }
             )
         }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,13 +41,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ReaderApp(navController: NavHostController){
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            BottomMenu(navController)
-        }) { innerPadding ->
+    Surface(modifier = Modifier.fillMaxSize(),
+        ) {
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(innerPadding)) {
+            modifier = Modifier.padding()) {
             AppNavigation(navController)
         }
     }

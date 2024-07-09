@@ -11,10 +11,12 @@ import com.example.stocksapp.model.CompanyOverview.CompanyOverview
 import com.example.stocksapp.model.TopGainersandLosers.TopGainer
 import com.example.stocksapp.model.TopGainersandLosers.TopLoser
 import com.example.stocksapp.repository.StocksRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProductScreenViewModel @Inject constructor(private val repository: StocksRepository)
     : ViewModel(){
 

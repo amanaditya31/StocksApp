@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.stocksapp.screens.ExploreScreen.ExploreScreen
 import com.example.stocksapp.screens.ExploreScreen.ExploreScreenViewModel
 import com.example.stocksapp.screens.ProductScreen.ProductScreen
+import com.example.stocksapp.screens.SearchScreen.SearchScreen
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -21,6 +22,9 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable(AppScreens.ProductScreen.name){
             ProductScreen(navController=navController)
+        }
+        composable(AppScreens.SearchScreen.name){
+            SearchScreen(navController = navController)
         }
     }
 }

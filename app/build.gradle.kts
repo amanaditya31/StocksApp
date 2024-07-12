@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.stocksapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+
+    implementation ("co.yml:ycharts:2.1.0")
     implementation("androidx.core:core-splashscreen:1.2.0-alpha01")
 
     implementation("androidx.compose.material:material:1.6.8")

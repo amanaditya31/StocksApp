@@ -13,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,9 +34,9 @@ data class SearchUiState(
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(private val repository: StocksRepository)
     : ViewModel() {
-    private val _searchText = MutableStateFlow("")
-    private val _stockList = MutableStateFlow<List<BestMatche>>(emptyList())
-    private val _selectedStock :MutableStateFlow<BestMatche?> = MutableStateFlow(null)
+    val _searchText = MutableStateFlow("")
+    val _stockList = MutableStateFlow<List<BestMatche>>(emptyList())
+    val _selectedStock :MutableStateFlow<BestMatche?> = MutableStateFlow(null)
     var isloading:Boolean by mutableStateOf(true)
 
     val searchUiState = combine(_searchText, _stockList, _selectedStock) {

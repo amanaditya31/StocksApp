@@ -30,7 +30,7 @@ class ExploreScreenViewModel @Inject constructor(private val repository: StocksR
         loadStocks()
     }
 
-    private fun loadStocks() {
+    fun loadStocks() {
         loadGaineandLoserrStocks("TOP_GAINERS_LOSERS")
 //        loadGainerStocks("TOP_GAINERS_LOSERS")
 //        loadLoserStocks("TOP_GAINERS_LOSERS")

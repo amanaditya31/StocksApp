@@ -1,15 +1,18 @@
 package com.example.stocksapp.repository
 
+import co.yml.charts.common.extensions.isNotNull
 import com.example.stocksapp.data.Resource
 import com.example.stocksapp.model.CompanyOverview.CompanyOverview
+import com.example.stocksapp.model.CompanyOverview.TimeSeriesMonthy.X19991231
+import com.example.stocksapp.model.StockProfileImage.StockProfileImage
 import com.example.stocksapp.model.TickerSearch.BestMatche
-import com.example.stocksapp.model.TopGainersandLosers.TopGainer
 import com.example.stocksapp.model.TopGainersandLosers.TopGainersandLosers
-import com.example.stocksapp.model.TopGainersandLosers.TopLoser
 import com.example.stocksapp.network.StocksApi
+import com.example.stocksapp.network.StocksApiImage
 import javax.inject.Inject
 
-class StocksRepository @Inject constructor(private val api: StocksApi) {
+class StocksRepository @Inject constructor(private val api: StocksApi,
+private val apiImage: StocksApiImage ) {
 
     suspend fun getStocks( searchQuery: String) : Resource<TopGainersandLosers>{
         return try{
@@ -43,6 +46,29 @@ class StocksRepository @Inject constructor(private val api: StocksApi) {
             Resource.Error(message = exception.message.toString())
         }
     }
+
+
+    suspend fun getCompanyOverviewStockImage( searchQuery: String) : Resource<StockProfileImage>{
+        return try{
+            Resource.Loading(data=true)
+            val overviewImage=apiImage.getStockProfile(symbol=searchQuery)
+            if(overviewImage.name.isNotBlank()) Resource.Loading(data=false)
+            Resource.Success(data=overviewImage)
+        }catch(exception: Exception){
+            Resource.Error(message = exception.message.toString())
+        }
+    }
+    suspend fun getMonthlyTimeSeries( searchQuery: String) : Resource<Map<String,X19991231>>{
+        return try{
+            Resource.Loading(data=true)
+            val monthlyTimeSeriesList=api.getTimeSeries(symbol=searchQuery).monthlyTimeSeries
+            if(monthlyTimeSeriesList.isNotNull()) Resource.Loading(data=false)
+            Resource.Success(data=monthlyTimeSeriesList)
+        }catch(exception: Exception){
+            Resource.Error(message = exception.message.toString())
+        }
+    }
+
 
 
 

@@ -11,3 +11,5 @@
 
 ## Screenshot/ ScreenRecording
 - Video -https://drive.google.com/file/d/14Oqq-Fx0E4yq9T8B8l39HyJqU9dduhfE/view?usp=sharing
+
+You can find the release apk in app/release folder

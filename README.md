@@ -9,4 +9,5 @@
 - Other Libraries used are  okhttp, Retrofit, Moshi
 - API used are from https://www.alphavantage.co
 
-## Screenshots
+## Screenshot/ ScreenRecording
+- Video -https://drive.google.com/file/d/14Oqq-Fx0E4yq9T8B8l39HyJqU9dduhfE/view?usp=sharing

@@ -5,7 +5,7 @@
 - StocksApp is Android application for a stocks / etfs broking platform built in Jetpack compose in Kotlin.
 - Follows MVVM Architecture
 - Uses Hilt for Dependency Injection
-- Uses YChart for line graphs for stocks.
+- Uses YCharts library for line graphs for stocks.
 - Other Libraries used are  okhttp, Retrofit, Moshi.
 - Utilizes caching of HTTP responses with OkHttp Interceptor and Retrofit.
 - API used are from https://www.alphavantage.co ( The API allows 5 request per minute and total of 25 requests per day )

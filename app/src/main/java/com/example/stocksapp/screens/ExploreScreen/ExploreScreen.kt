@@ -82,6 +82,7 @@ fun ExploreScreen(navController: NavController,
 
             )
         },
+        //bottomNavigation bar
         bottomBar = {
             BottomNavigation() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -139,12 +140,12 @@ fun ScreenContent(
     navController: NavController,
     counter: Int
 ) {
-    var list1 = viewModel.list1
-    var list2 = viewModel.list2
+    var list1 = viewModel.list1 //contains topgainers
+    var list2 = viewModel.list2 //containes toplosers
     if (viewModel.isloading) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = "Loading..")
-            LinearProgressIndicator()
+            LinearProgressIndicator() //shows progress indicator until the api response arrives
         }
     } else {
         Text(
@@ -157,6 +158,7 @@ fun ScreenContent(
             fontWeight = FontWeight.Bold,
             fontSize=20.sp
         )
+        //Column displaying list of cards based on counter value: 0: Top Gainers and 1: Top Losers
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
@@ -202,7 +204,7 @@ fun ScreenContent(
                             text = "+${listItem.change_amount
                                 .replace(Regex("""(\.\d{2})\d*"""), "$1")}" +
                                     "(${listItem.change_percentage
-                                        .replace(Regex("""(\.\d{2})\d*"""), "$1")}%)",
+                                        .replace(Regex("""(\.\d{2})\d*"""), "$1")}%)", //regex to keep decimal value to two places
                             modifier = Modifier
                                 .padding(start=20.dp),
                             textAlign = TextAlign.Center,

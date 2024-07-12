@@ -4,16 +4,15 @@ import co.yml.charts.common.extensions.isNotNull
 import com.example.stocksapp.data.Resource
 import com.example.stocksapp.model.CompanyOverview.CompanyOverview
 import com.example.stocksapp.model.CompanyOverview.TimeSeriesMonthy.X19991231
-import com.example.stocksapp.model.StockProfileImage.StockProfileImage
 import com.example.stocksapp.model.TickerSearch.BestMatche
 import com.example.stocksapp.model.TopGainersandLosers.TopGainersandLosers
 import com.example.stocksapp.network.StocksApi
-import com.example.stocksapp.network.StocksApiImage
 import javax.inject.Inject
 
-class StocksRepository @Inject constructor(private val api: StocksApi,
-private val apiImage: StocksApiImage ) {
-
+class StocksRepository @Inject constructor(private val api: StocksApi
+//private val apiImage: StocksApiImage
+) {
+    //TO get stocks for Top Gainer and Loser Screen
     suspend fun getStocks( searchQuery: String) : Resource<TopGainersandLosers>{
         return try{
             Resource.Loading(data=true)
@@ -24,6 +23,8 @@ private val apiImage: StocksApiImage ) {
             Resource.Error(message = exception.message.toString())
         }
     }
+
+    //to get Company Details of a particular stock
     suspend fun getCompanyOverviewStock( searchQuery: String) : Resource<CompanyOverview>{
         return try{
             Resource.Loading(data=true)
@@ -35,7 +36,7 @@ private val apiImage: StocksApiImage ) {
         }
     }
 
-
+    //To get best matches on searching a query
     suspend fun getBestMatches( searchQuery: String) : Resource<List<BestMatche>>{
         return try{
             Resource.Loading(data=true)
@@ -48,16 +49,7 @@ private val apiImage: StocksApiImage ) {
     }
 
 
-    suspend fun getCompanyOverviewStockImage( searchQuery: String) : Resource<StockProfileImage>{
-        return try{
-            Resource.Loading(data=true)
-            val overviewImage=apiImage.getStockProfile(symbol=searchQuery)
-            if(overviewImage.name.isNotBlank()) Resource.Loading(data=false)
-            Resource.Success(data=overviewImage)
-        }catch(exception: Exception){
-            Resource.Error(message = exception.message.toString())
-        }
-    }
+    //Time Series Data to plot a graph
     suspend fun getMonthlyTimeSeries( searchQuery: String) : Resource<Map<String,X19991231>>{
         return try{
             Resource.Loading(data=true)
@@ -69,7 +61,16 @@ private val apiImage: StocksApiImage ) {
         }
     }
 
-
+//    suspend fun getCompanyOverviewStockImage( searchQuery: String) : Resource<StockProfileImage>{
+//        return try{
+//            Resource.Loading(data=true)
+//            val overviewImage=apiImage.getStockProfile(symbol=searchQuery)
+//            if(overviewImage.name.isNotBlank()) Resource.Loading(data=false)
+//            Resource.Success(data=overviewImage)
+//        }catch(exception: Exception){
+//            Resource.Error(message = exception.message.toString())
+//        }
+//    }
 
 
 

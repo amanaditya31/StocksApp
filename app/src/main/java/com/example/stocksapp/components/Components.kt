@@ -1,26 +1,87 @@
 package com.example.stocksapp.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.stocksapp.navigation.BottomMenu
+
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun SearchForm(modifier :Modifier= Modifier, loading: Boolean =false,
+               hint: String= "Search",
+               onSearch:(String)-> Unit={}){
+    Column {
+        val searchQueryState= rememberSaveable{ mutableStateOf("") }
+        val keyboardController= LocalSoftwareKeyboardController.current
+        val valid= remember(searchQueryState.value) {
+            searchQueryState.value.trim().isNotEmpty()
+        }
+        InputField(valueState = searchQueryState, labelId ="Search" , enabled =true ,
+            onAction = KeyboardActions{
+                if(!valid) return@KeyboardActions
+                onSearch(searchQueryState.value.trim())
+                searchQueryState.value=""
+                keyboardController?.hide()
+            }
+        )
+
+    }
+}
+
+@Composable
+fun InputField(
+    modifier: Modifier=Modifier,
+    valueState: MutableState<String>,
+    labelId: String,
+    enabled: Boolean,
+    isSingleLine: Boolean=true,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+
+) {
+    OutlinedTextField(
+        value=(valueState.value),
+        onValueChange ={ valueState.value = it},
+        label ={ androidx.compose.material3.Text(text=labelId) },
+        singleLine = isSingleLine,
+        textStyle = TextStyle(fontSize = 18.sp,
+            color= MaterialTheme.colorScheme.onBackground),
+        modifier= Modifier
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth(),
+        enabled=enabled,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+        keyboardActions = onAction,
+    )
+}
+
 
 @Composable
 fun BottomMenu(navController: NavController, counter: Int) {

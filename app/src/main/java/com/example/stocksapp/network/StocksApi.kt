@@ -2,11 +2,9 @@ package com.example.stocksapp.network
 
 import com.example.stocksapp.model.CompanyOverview.CompanyOverview
 import com.example.stocksapp.model.CompanyOverview.TimeSeriesMonthy.TimeSeriesMonthly
-import com.example.stocksapp.model.StockProfileImage.StockProfileImage
 import com.example.stocksapp.model.TickerSearch.TickerSearch
 import com.example.stocksapp.model.TopGainersandLosers.TopGainersandLosers
 import com.example.stocksapp.utils.Constants.API_KEY
-import com.example.stocksapp.utils.Constants.API_KEY_IMAGE
 import retrofit2.http.GET
 import retrofit2.http.Query
 import javax.inject.Singleton
@@ -35,14 +33,14 @@ interface StocksApi {
 
 }
 
-@Singleton
-interface StocksApiImage {
-
-    @GET("stock/profile2")
-    suspend fun getStockProfile(
-        @Query("symbol") symbol: String,
-        @Query("token") token: String= API_KEY_IMAGE
-    ): StockProfileImage
-
-
-}
+//@Singleton
+//interface StocksApiImage {
+//
+//    @GET("stock/profile2")
+//    suspend fun getStockProfile(
+//        @Query("symbol") symbol: String,
+//        @Query("token") token: String= API_KEY_IMAGE
+//    ): StockProfileImage
+//
+//
+//}

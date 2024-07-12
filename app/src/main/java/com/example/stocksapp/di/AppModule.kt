@@ -4,9 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.example.stocksapp.network.StocksApi
-import com.example.stocksapp.network.StocksApiImage
 import com.example.stocksapp.utils.Constants.BASE_URL
-import com.example.stocksapp.utils.Constants.BASE_URL_IMAGE
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -35,6 +33,8 @@ object AppModule {
     fun provideContext(@ApplicationContext appContext: Context): Context {
         return appContext // Provides the Application context for injection
     }
+
+    //checks Network Connectivity
     fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
@@ -45,11 +45,14 @@ object AppModule {
         }
         return false
     }
+
+    //CacheInterceptor by implementing Interceptor
+    // and we have a CacheControl builder that is used to provide the header for the Cache-Control
     class CacheInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val response: Response = chain.proceed(chain.request())
             val cacheControl = CacheControl.Builder()
-                .maxAge(10, TimeUnit.DAYS)
+                .maxAge(1, TimeUnit.DAYS)  //Caches network calls for 1 day
                 .build()
             return response.newBuilder()
                 .header("Cache-Control", cacheControl.toString())
@@ -57,6 +60,8 @@ object AppModule {
         }
     }
 
+    //create a ForceCacheInterceptor in addition to the above one
+    //(CacheInterceptor, only if Cache-Control header is not enabled from the server).
     class ForceCacheInterceptor(private val context: Context)  : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val builder: Request.Builder = chain.request().newBuilder()
@@ -66,6 +71,8 @@ object AppModule {
             return chain.proceed(builder.build());
         }
     }
+
+    //Add this Interceptors to the OkHttpClient
     @Provides
     @Singleton
     fun provideHttpClient(context: Context): OkHttpClient { // Inject Context
@@ -83,7 +90,10 @@ object AppModule {
             .build()
     }
 
-    // ... (your other classes: CacheInterceptor, ForceCacheInterceptor, Moshi instance)
+    //create a moshi instance
+    private val moshi= Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     @Singleton
     @Provides
@@ -96,9 +106,13 @@ object AppModule {
             .build()
             .create(StocksApi::class.java)
     }
-    private val moshi= Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
+
+
+
+//    @Provides
+//    @Singleton
+//    fun provideApiKeyStore(@ApplicationContext context: Context) = ApiKeyStore
+
 //
 //    val logging= HttpLoggingInterceptor()
 //
@@ -125,29 +139,27 @@ object AppModule {
 
 
     //For image loading
-    private val moshi2= Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
-    val logging2= HttpLoggingInterceptor()
-
-    val httpClient2= OkHttpClient.Builder().apply {
-        logging2.level= HttpLoggingInterceptor.Level.BODY
-        addNetworkInterceptor(logging2)
-    }.build()
-
-    private val retrofit2= Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi2))
-        .baseUrl(BASE_URL_IMAGE)
-        .client(httpClient2)
-        .build()
-
-    //    val retrofitService: StocksApi by lazy{
-//        retrofit.create(StocksApi:: class.java)
+//    private val moshi2= Moshi.Builder()
+//        .add(KotlinJsonAdapterFactory())
+//        .build()
+//
+//    val logging2= HttpLoggingInterceptor()
+//
+//    val httpClient2= OkHttpClient.Builder().apply {
+//        logging2.level= HttpLoggingInterceptor.Level.BODY
+//        addNetworkInterceptor(logging2)
+//    }.build()
+//
+//    private val retrofit2= Retrofit.Builder()
+//        .addConverterFactory(MoshiConverterFactory.create(moshi2))
+//        .baseUrl(BASE_URL_IMAGE)
+//        .client(httpClient2)
+//        .build()
+//
+//
+//    @Singleton
+//    @Provides
+//    fun providesStocksApiImage(): StocksApiImage {
+//        return retrofit2.create(StocksApiImage::class.java)
 //    }
-    @Singleton
-    @Provides
-    fun providesStocksApiImage(): StocksApiImage {
-        return retrofit2.create(StocksApiImage::class.java)
-    }
 }

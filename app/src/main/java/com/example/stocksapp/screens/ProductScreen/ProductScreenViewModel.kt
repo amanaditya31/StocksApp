@@ -10,7 +10,6 @@ import co.yml.charts.common.extensions.isNotNull
 import com.example.stocksapp.data.Resource
 import com.example.stocksapp.model.CompanyOverview.CompanyOverview
 import com.example.stocksapp.model.CompanyOverview.TimeSeriesMonthy.X19991231
-import com.example.stocksapp.model.StockProfileImage.StockProfileImage
 import com.example.stocksapp.repository.StocksRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -74,29 +73,29 @@ class ProductScreenViewModel @Inject constructor(private val repository: StocksR
     }
 
 
-    var companyOverviewImage by mutableStateOf<StockProfileImage?>(null)
-    var isloading1:Boolean by mutableStateOf(true)
-
-    fun loadCompanyOverviewImage(query: String) {
-        viewModelScope.launch(Dispatchers.Default) {
-            if(query.isEmpty()){
-                return@launch
-            }
-
-            try{
-                when(val response=repository.getCompanyOverviewStockImage(query)){
-                    is Resource.Success->{
-                        companyOverviewImage=response.data
-                        if(companyOverviewImage?.name!!.isNotBlank()) isloading1=false
-                    }
-                    is Resource.Error->{
-                        Log.e("Network", "Failed getting company overview image : {${response.message}}")
-                    }else->{isloading1=false}
-                }
-            }catch (exception: Exception){
-                isloading1=false
-                Log.d("Network", "Company Overview image: ${exception.message.toString()}")
-            }
-        }
-    }
+//    var companyOverviewImage by mutableStateOf<StockProfileImage?>(null)
+//    var isloading1:Boolean by mutableStateOf(true)
+//
+//    fun loadCompanyOverviewImage(query: String) {
+//        viewModelScope.launch(Dispatchers.Default) {
+//            if(query.isEmpty()){
+//                return@launch
+//            }
+//
+//            try{
+//                when(val response=repository.getCompanyOverviewStockImage(query)){
+//                    is Resource.Success->{
+//                        companyOverviewImage=response.data
+//                        if(companyOverviewImage?.name!!.isNotBlank()) isloading1=false
+//                    }
+//                    is Resource.Error->{
+//                        Log.e("Network", "Failed getting company overview image : {${response.message}}")
+//                    }else->{isloading1=false}
+//                }
+//            }catch (exception: Exception){
+//                isloading1=false
+//                Log.d("Network", "Company Overview image: ${exception.message.toString()}")
+//            }
+//        }
+//    }
 }

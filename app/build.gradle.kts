@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("co.yml:ycharts:2.1.0")
     implementation("androidx.core:core-splashscreen:1.2.0-alpha01")
 

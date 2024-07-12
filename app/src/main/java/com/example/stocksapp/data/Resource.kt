@@ -1,5 +1,6 @@
 package com.example.stocksapp.data
 
+//generics to add more data to a response
 sealed class Resource<T> (val data: T?=null, val message: String?=null) {
     class Success<T>(data: T?) : Resource<T>(data)
 
